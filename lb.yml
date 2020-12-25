@@ -1,0 +1,28 @@
+- hosts: web
+  tasks:
+  - name: "installing httpd web server"
+    package:
+      name: "httpd"
+
+  - copy:
+      dest: "/var/www/html/index.html"
+      content: "This is my weserver. it is configure for load-blancing testing!!"
+  
+  - service:
+      name: "httpd"
+      state: restarted
+
+
+- hosts: lb
+  tasks:
+  - name: "configure lb "
+    package:
+      name: "haproxy"
+
+  - template:
+      dest: "/etc/haproxy/haproxy.cfg"
+      src: "haproxy.cfg.j2"
+
+  - service:
+      name: "haproxy"
+      state: restarted
